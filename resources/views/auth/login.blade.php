@@ -1,47 +1,94 @@
-<x-guest-layout>
+<x-auth-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <!-- Username / Email Address -->
+        <div class="form-group mb-2">
+            <x-input-label for="identifierId" :value="__('Username')" />
+            <div class="input-group">
+                <x-text-input id="identifierId" class="form-control {{ $errors->get('username') ? 'is-invalid' : ($errors->get('email') ? 'is-invalid' : '') }}" type="text" name="identifierId" :value="old('identifierId')" autofocus />
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-user"></span>
+                    </div>
+                </div>
+            </div>
+            <x-input-error :messages="$errors->get('email')" class="text-danger" />
+            <x-input-error :messages="$errors->get('username')" class="text-danger" />
         </div>
 
         <!-- Password -->
-        <div class="mt-4">
+        <div class="form-group mb-2">
             <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            <div class="input-group">
+                <x-text-input id="password" class="form-control {{ $errors->get('password') ? 'is-invalid' : '' }}"
+                    type="password"
+                    name="password"
+                    autocomplete="current-password" />
+                <div class="input-group-append">
+                    <div class="input-group-text" style="border-right: 0; cursor: pointer; display: none;" id="togglePassword">
+                        <i class="fas fa-eye" id="iconTogglePassword"></i>
+                    </div>
+                    <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                    </div>
+                </div>
+            </div>
+            <x-input-error :messages="$errors->get('password')" class="text-danger" />
         </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
+        <div class="row">
+            <div class="col-12">
+                <div class="icheck-primary">
+                    <input id="remember_me" type="checkbox" name="remember">
+                    <label for="remember_me">{{ __('Remember me') }}</label>
+                </div>
+            </div>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
+        <x-primary-button class="btn btn-block btn-primary mt-2 mb-4">{{ __('Login') }}</x-primary-button>
+
+        @if (Route::has('password.request'))
+            <p class="mb-3">
+                <a href="{{ route('password.request') }}">
                     {{ __('Forgot your password?') }}
                 </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
+            </p>
+        @endif
     </form>
-</x-guest-layout>
+
+    <script>
+        const passwordInput = document.getElementById('password');
+        const togglePassword = document.getElementById('togglePassword');
+        const icon = document.getElementById('iconTogglePassword');
+
+        let keepVisible = false;
+
+        passwordInput.addEventListener('focus', () => {
+            togglePassword.style.display = 'flex';
+        });
+
+        passwordInput.addEventListener('blur', () => {
+            setTimeout(() => {
+                if (!keepVisible) {
+                    togglePassword.style.display = 'none';
+                }
+            }, 150);
+        });
+
+        togglePassword.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            keepVisible = true;
+
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
+
+            setTimeout(() => keepVisible = false, 200);
+        });
+    </script>
+</x-auth-layout>

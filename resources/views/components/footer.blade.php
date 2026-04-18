@@ -1,0 +1,1 @@
+<div>Copyright &copy; 2026 {{ config('app.name', 'Laravel') }}. All Rights Reserved.</div>
