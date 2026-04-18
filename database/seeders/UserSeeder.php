@@ -13,12 +13,47 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
-            'id' => '2',
-            'name' => 'Administrator',
-            'email' => 'admin@domain.id',
-            'username' => 'admin',
-            'password' => bcrypt('adminpass'),
-        ]);
+        $users = [
+            [
+                'name' => 'Requestor',
+                'email' => 'requestor@mail.com',
+                'username' => 'requestor',
+                'password' => bcrypt('requestorpass'),
+            ],
+            [
+                'name' => 'SPV Gudang',
+                'email' => 'spv@mail.com',
+                'username' => 'spv',
+                'password' => bcrypt('spvpass'),
+            ],
+            [
+                'name' => 'Kepala Gudang',
+                'email' => 'head@mail.com',
+                'username' => 'head',
+                'password' => bcrypt('headpass'),
+            ],
+            [
+                'name' => 'Manager Operasional',
+                'email' => 'manager@mail.com',
+                'username' => 'manager',
+                'password' => bcrypt('managerpass'),
+            ],
+            [
+                'name' => 'Direktur Operasional',
+                'email' => 'coo@mail.com',
+                'username' => 'coo',
+                'password' => bcrypt('coopass'),
+            ],
+            [
+                'name' => 'Direktur Keuangan',
+                'email' => 'cfo@mail.com',
+                'username' => 'cfo',
+                'password' => bcrypt('cfopass'),
+            ],
+        ];
+
+        foreach ($users as $userData) {
+            User::factory()->create($userData);
+        }
     }
 }

@@ -7,17 +7,21 @@
                 </x-nav-link>
             </li>
 
-            <li class="nav-item">
-                <x-nav-link class="nav-link" href="#">
-                    <i class="nav-icon fa fa-clipboard-list mr-2"></i><p>Pengajuan</p>
-                </x-nav-link>
-            </li>
+            @can('request.index')
+                <li class="nav-item">
+                    <x-nav-link class="nav-link" :href="route('request.index')" :active="request()->routeIs('request.*')">
+                        <i class="nav-icon fa fa-clipboard-list mr-2"></i><p>Pengajuan</p>
+                    </x-nav-link>
+                </li>
+            @endcan
 
-            <li class="nav-item">
-                <x-nav-link class="nav-link" href="#">
-                    <i class="nav-icon fa fa-clipboard-check mr-2"></i><p>Persetujuan</p>
-                </x-nav-link>
-            </li>
+            @can('approval.index')
+                <li class="nav-item">
+                    <x-nav-link class="nav-link" :href="route('approval.index')" :active="request()->routeIs('approval.*')">
+                        <i class="nav-icon fa fa-clipboard-check mr-2"></i><p>Persetujuan</p>
+                    </x-nav-link>
+                </li>
+            @endcan
         </ul>
     </nav>
 </div>
