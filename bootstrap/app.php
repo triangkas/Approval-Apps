@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\PermissionMiddleware;
+use App\Http\Middleware\TwoFAMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -14,6 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(append: [
             PermissionMiddleware::class,
+        ]);
+        $middleware->alias([
+            '2fa' => TwoFAMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

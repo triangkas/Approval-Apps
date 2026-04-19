@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TwoFAController;
 
 Route::middleware('guest')->group(function () {
     // Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
@@ -46,3 +47,8 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 });
+
+Route::get('/2fa/setup', [TwoFAController::class, 'setup'])->middleware('auth')->name('2fa.setup');
+Route::post('/2fa/enable', [TwoFAController::class, 'enable'])->middleware('auth')->name('2fa.enable');
+Route::get('/2fa/verify', [TwoFAController::class, 'verifyForm'])->name('2fa.verify');
+Route::post('/2fa/verify', [TwoFAController::class, 'verify'])->name('2fa.verify.post');
