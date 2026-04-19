@@ -27,6 +27,7 @@
 
 Aplikasi Approval merupakan sistem pengajuan pembangunan gudang distribusi dengan proses approval berjenjang. dimulai dari :
 
+- Login aplikasi menggunakan akun dummy yang telah disediakan diatas, aktifkan 2FA Google Authenticator
 - Requestor mengajukan data berupa judul, lokasi, budget, keterangan dan dokumen yang diperlukan. Pada saat menambah data terdapat tombol untuk simpan data ke dalam draft atau melakukan pengiriman data. Data pengajuan baru akan bisa dilihat oleh approver ketika data dikirim.
 - Data yang sudah di kirim oleh Requestor akan dilakukan approval dengan urutan sebagai berikut: SPV Gudang > Kepala Gudang > Manager Operasional > Direktur Operasional > Direktur Keuangan.
 - Apabila dari approver terdapat reject maka proses pengajuan berhenti, dan pihak reject wajib memberikan alasan penolakan.
