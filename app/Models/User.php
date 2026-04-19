@@ -48,4 +48,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function level()
+    {
+        return $this->hasMany(ApprovalStep::class);
+    }
+
+    public function approval_history()
+    {
+        return $this->hasMany(ApprovalHistory::class);
+    }
 }

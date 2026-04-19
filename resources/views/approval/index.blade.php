@@ -21,7 +21,7 @@
 
     <x-datatables-ajax>
         new DataTable('.datatables', {
-            ajax:'{{ route('request.data-json') }}',
+            ajax:'{{ route('approval.data-json') }}',
             order: [[4, 'desc']],
             columns: [
                 {
@@ -42,19 +42,10 @@
                     searchable: false,
                     className: 'dt-center',
                     render: function (data, type, row, meta) {
-                        let updateUrl = '{{ route("request.edit", ":id") }}';
-                        let editUrl = updateUrl.replace(':id', data);
-                        let btnEdit = '';
-                        let btnDelete = '';
-                        if(row.approval_level == '0' || row.approval_level == null) {
-                            btnEdit = `<button class="btn btn-info btn-sm" type="button" title="Edit" onclick="window.location.href='${editUrl}'"><i class="fa fa-pen"></i></button>`;
-                            btnDelete = `<button class="btn btn-danger btn-sm" type="button" title="Hapus" onclick="confirmDelete('${data}')"><i class="fa fa-trash"></i></button>`;
-                        }
-                        
+                        let Url = '{{ route("approval.show", ":id") }}';
+                        let detailUrl = Url.replace(':id', data);
                         return `<div class="btn-group">\
-                                <button class="btn btn-dark btn-sm" type="button" title="Detail" onclick="detailData('${data}')"><i class="fa fa-book-reader"></i></button>\
-                                ${btnEdit}\
-                                ${btnDelete}\
+                                <button class="btn btn-primary btn-sm" type="button" title="Detail" onclick="window.location.href='${detailUrl}'">Detail Pengajuan</button>\
                             </div>`;
                     }
                 },
@@ -62,22 +53,7 @@
                 {title: 'Estimasi Budget', data: 'budget', className: 'dt-right'},
                 {title: 'Tanggal Pengajuan', data: 'sent_at', className: 'dt-center'},
                 {title: 'Status', data: 'status', className: 'dt-center'}
-            ],
-            layout: {
-                topStart: {
-                    buttons: [
-                        {
-                            text: '<i class="fa fa-plus mr-2"></i>Tambah',
-                            className: 'btn-add',
-                            action: function (e, dt, node, config) {
-                                window.location.href = '{{ route('request.create') }}';
-                            }
-                        }
-                    ]
-                }
-            }
+            ]
         });
     </x-datatables-ajax>
-    <x-modal-detail url="{{ route('request.show', ':id') }}" />
-    <x-modal-delete method="delete" url="{{ route('request.destroy', ':id') }}" />
 </x-app-layout>

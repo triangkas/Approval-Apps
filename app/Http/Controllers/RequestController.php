@@ -7,6 +7,7 @@ use Yajra\DataTables\Facades\DataTables;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Request as RequestModel;
 use App\Models\RequestFile;
+use App\Models\ApprovalHistory;
 
 class RequestController extends Controller
 {
@@ -39,9 +40,13 @@ class RequestController extends Controller
             ->addIndexColumn()
             ->editColumn('status', function ($row) { 
                 if($row->status == 'waiting'){
-                    return '<span class="badge badge-warning">Menunggu Persetujuan</span>';
+                    if($row->approval_level == '0'){
+                        return '<span class="badge badge-warning">Menunggu Persetujuan</span>';
+                    } else {
+                        return '<span class="badge badge-info">Disetujui oleh ' . $row->level->user->name . '</span>';
+                    }
                 } elseif($row->status == 'approved'){
-                    return '<span class="badge badge-success">Disetujui</span>';
+                    return '<span class="badge badge-success">Disetujui oleh semua pihak</span>';
                 } elseif($row->status == 'rejected'){
                     return '<span class="badge badge-danger">Ditolak</span>';
                 } else {
@@ -124,12 +129,13 @@ class RequestController extends Controller
      */
     public function show(string $id)
     {
-        $detail = RequestModel::where('approval_level', 0)->findOrFail($id);
+        $detail = RequestModel::findOrFail($id);
         $files = RequestFile::where('request_id', $id)->get();
         return response()->json(view('request.show', [
             'urlFile' => env('APP_URL').$this->pathFile,
             'detail' => $detail,
             'files' => $files,
+            'histories' => ApprovalHistory::where('request_id', $id)->orderBy('created_at', 'desc')->get(),
         ])->render());
     }
 

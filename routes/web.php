@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('approval')->name('approval.')->group(function () {
         Route::get('/data-json', [ApprovalController::class, 'dataJson'])->name('data-json');
+        Route::post('/status/{id}', [ApprovalController::class, 'status'])->name('status');
         Route::resource('/', ApprovalController::class)->parameters(['' => 'id']);
     });
 });
