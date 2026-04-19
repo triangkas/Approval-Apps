@@ -37,19 +37,13 @@ class PermissionMiddleware
             }
         }
 
-        $action = $request->route()->getAction();
-
-        if (isset($action['controller'])) {
-
-            [$controller, $method] = explode('@', $action['controller']);
-
-            $controller = class_basename($controller);
-            $prefix = strtolower(str_replace('Controller', '', $controller));
-
-            $permission = "{$prefix}.{$method}";
-
-            abort_unless(auth()->user()?->can($permission), 403);
+        // permission route name
+        $permission = $request->route()->getName();
+        if (!$permission) {
+            return $next($request);
         }
+
+        abort_unless(auth()->user()->can($permission), 403);
 
         return $next($request);
     }

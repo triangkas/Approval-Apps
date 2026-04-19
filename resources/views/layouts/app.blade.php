@@ -28,6 +28,7 @@
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <!-- DataTables JS -->
         <script src="{{ asset('assets/plugins/datatables/datatables.js') }}"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
         <!-- Theme style -->
         <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.css') }}">
         <!-- Theme style custom -->
@@ -90,9 +91,23 @@
                     format: 'DD/MM/YYYY'
                 }
             });
+            
+            // handle format nominal
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelectorAll('.nominal-format').forEach(function (el) {
+                    el.addEventListener('input', function (e) {
+                        let value = e.target.value.replace(/\D/g, '');
+                        if (value) {
+                            value = new Intl.NumberFormat('id-ID').format(value);
+                        }
+                        e.target.value = value;
+                    });
+                });
+            });
 		</script>
         @yield('jsDatatables')
         @yield('js')
         @yield('js-extra')
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     </body>
 </html>
