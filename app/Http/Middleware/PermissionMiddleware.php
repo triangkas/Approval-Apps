@@ -28,7 +28,7 @@ class PermissionMiddleware
             'register',
             'verification.*',
             'profile.*',
-            'dashboard',
+            'dashboard*',
         ];
 
         foreach ($exceptRoutes as $pattern) {
